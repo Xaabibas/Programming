@@ -1,6 +1,5 @@
 package moduls.enterator;
 
-import moduls.HairColor;
 import moduls.Person;
 import moduls.validator.*;
 
