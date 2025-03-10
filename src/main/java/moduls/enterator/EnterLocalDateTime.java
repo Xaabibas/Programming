@@ -12,11 +12,11 @@ public class EnterLocalDateTime implements SimpleEnterator<LocalDateTime> {
     /**
      * Ввод значения
      *
-     * @param scanner - сканер
+     * @param scanner   - сканер
      * @param validator - валидатор
      * @return возвращает введенное пользователем значение типа LocalDateTime
      */
-    public LocalDateTime enter(Scanner scanner, Validator<LocalDateTime> validator) {
+    public LocalDateTime enter(Scanner scanner, Validator validator) {
         String line;
         String[] data;
         int[] date = new int[6];

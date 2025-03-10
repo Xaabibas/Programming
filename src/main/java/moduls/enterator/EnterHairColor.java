@@ -1,7 +1,6 @@
 package moduls.enterator;
 
 import moduls.HairColor;
-import moduls.TicketType;
 import moduls.validator.Validator;
 
 import java.util.Scanner;
@@ -13,12 +12,12 @@ public class EnterHairColor implements SimpleEnterator<HairColor> {
     /**
      * Ввод значения
      *
-     * @param scanner - сканер
+     * @param scanner   - сканер
      * @param validator - валидатор
      * @return возвращает введенное значение поля
      */
     @Override
-    public HairColor enter(Scanner scanner, Validator<HairColor> validator) {
+    public HairColor enter(Scanner scanner, Validator validator) {
         String line;
         while (true) {
             System.out.print("Введите значение поля hairColor (для справки введите list; " +
@@ -26,12 +25,12 @@ public class EnterHairColor implements SimpleEnterator<HairColor> {
             line = scanner.nextLine();
 
             while (line.equals("list")) {
-                TicketType.show();
+                HairColor.show();
                 line = scanner.nextLine();
             }
 
             if (validator.validate(line)) {
-                return line.isEmpty() ? null : HairColor.valueOf(line);
+                return line.isEmpty() ? null:HairColor.valueOf(line);
             }
         }
     }

@@ -9,11 +9,11 @@ import java.util.Scanner;
  */
 public class EnterPrice implements SimpleEnterator<Float> {
     /**
-     * @param scanner - сканер
+     * @param scanner   - сканер
      * @param validator - валидатор
      * @return возвращает введенное пользователем значение типа float
      */
-    public Float enter(Scanner scanner, Validator<Float> validator) {
+    public Float enter(Scanner scanner, Validator validator) {
         String line;
         while (true) {
             System.out.print("Введите значение поля price > ");

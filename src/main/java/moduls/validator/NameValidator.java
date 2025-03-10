@@ -3,7 +3,7 @@ package moduls.validator;
 /**
  * Класс проверки значения поля name
  */
-public class NameValidator implements Validator<String> {
+public class NameValidator implements Validator {
     /**
      * Проверка значения
      *

@@ -5,7 +5,7 @@ import moduls.TicketType;
 /**
  * Класс проверки вводимого поля type
  */
-public class TypeValidator implements Validator<TicketType> {
+public class TypeValidator implements Validator {
     /**
      * Проверка значения
      *

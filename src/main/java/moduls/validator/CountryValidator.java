@@ -5,7 +5,7 @@ import moduls.Country;
 /**
  * Класс проверки вводимого значения поля nationality
  */
-public class CountryValidator implements Validator<Country> {
+public class CountryValidator implements Validator {
     /**
      * Проверка значения
      *

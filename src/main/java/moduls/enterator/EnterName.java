@@ -11,11 +11,11 @@ public class EnterName implements SimpleEnterator<String> {
     /**
      * Ввод значения
      *
-     * @param scanner - сканер
+     * @param scanner   - сканер
      * @param validator - валидатор
      * @return возвращает введенное пользователем значение типа String
      */
-    public String enter(Scanner scanner, Validator<String> validator) {
+    public String enter(Scanner scanner, Validator validator) {
         while (true) {
             System.out.print("Введите значение поля name > ");
             String line = scanner.nextLine();

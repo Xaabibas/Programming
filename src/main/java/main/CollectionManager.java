@@ -72,7 +72,7 @@ public class CollectionManager {
 
                 break;
             } catch (FileNotFoundException e) {
-                System.out.println("Такого файла не существует!");;
+                System.out.println("Такого файла не существует!");
             } catch (JsonSyntaxException e) {
                 System.out.println("В веденном файле ошибка синтаксиса!");
             }

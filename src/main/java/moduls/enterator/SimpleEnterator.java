@@ -10,5 +10,10 @@ import java.util.Scanner;
  * @param <T> вводимый тип
  */
 public interface SimpleEnterator<T> {
-    T enter(Scanner scanner, Validator<T> validator);
+    /**
+     * @param scanner - сканер
+     * @param validator - валидатор
+     * @return возвращает введенное пользователем значение поля
+     */
+    T enter(Scanner scanner, Validator validator);
 }

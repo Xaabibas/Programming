@@ -3,7 +3,7 @@ package moduls.validator;
 /**
  * Класс проверки корректности ввода поля y
  */
-public class YValidator implements Validator<Long> {
+public class YValidator implements Validator {
     /**
      * Проверка значения
      *

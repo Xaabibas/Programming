@@ -5,7 +5,7 @@ import moduls.ValidationException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 
-public class DateValidator implements Validator<LocalDateTime> {
+public class DateValidator implements Validator {
     @Override
     public boolean validate(String line) {
         try {

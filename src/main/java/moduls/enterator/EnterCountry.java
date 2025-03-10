@@ -17,7 +17,7 @@ public class EnterCountry implements SimpleEnterator<Country> {
      * @return возвращает введенное пользователем значение поля nationality
      */
     @Override
-    public Country enter(Scanner scanner, Validator<Country> validator) {
+    public Country enter(Scanner scanner, Validator validator) {
         String line;
         while (true) {
             System.out.print("Введите значение поля nationality (для справки введите list; " +

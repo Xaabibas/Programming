@@ -5,7 +5,7 @@ import moduls.HairColor;
 /**
  * Класс проверки значения вводимого поля hairColor
  */
-public class HairValidator implements Validator<HairColor> {
+public class HairValidator implements Validator {
     /**
      * Проверка значения
      *

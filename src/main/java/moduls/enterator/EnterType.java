@@ -12,12 +12,12 @@ public class EnterType implements SimpleEnterator<TicketType> {
     /**
      * Ввод значения
      *
-     * @param scanner - сканер
+     * @param scanner   - сканер
      * @param validator - валидатор
      * @return возвращает введенное пользователем значение поля type
      */
     @Override
-    public TicketType enter(Scanner scanner, Validator<TicketType> validator) {
+    public TicketType enter(Scanner scanner, Validator validator) {
         String line;
         while (true) {
             System.out.print("Введите значение поля type (для справки введите list; " +
@@ -30,7 +30,7 @@ public class EnterType implements SimpleEnterator<TicketType> {
             }
 
             if (validator.validate(line)) {
-                return line.isEmpty() ? null : TicketType.valueOf(line);
+                return line.isEmpty() ? null:TicketType.valueOf(line);
             }
         }
     }

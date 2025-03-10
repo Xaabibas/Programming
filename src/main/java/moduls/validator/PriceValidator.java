@@ -5,7 +5,7 @@ import moduls.ValidationException;
 /**
  * Класс проверки корректности введенного поля price
  */
-public class PriceValidator implements Validator<Float> {
+public class PriceValidator implements Validator {
     /**
      * Проверка значения
      *

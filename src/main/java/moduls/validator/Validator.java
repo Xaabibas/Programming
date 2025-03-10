@@ -3,7 +3,7 @@ package moduls.validator;
 /**
  * Интерфейс валидатора
  */
-public interface Validator<T> {
+public interface Validator {
     /**
      * Проверка значения
      *

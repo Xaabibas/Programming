@@ -5,7 +5,7 @@ import moduls.ValidationException;
 /**
  * Класс проверки значения поля x
  */
-public class XValidator implements Validator<Float> {
+public class XValidator implements Validator {
     /**
      * Проверка значения
      *

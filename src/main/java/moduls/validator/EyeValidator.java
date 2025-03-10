@@ -5,7 +5,7 @@ import moduls.EyeColor;
 /**
  * Класс проверки значения поля eyeColor
  */
-public class EyeValidator implements Validator<EyeColor> {
+public class EyeValidator implements Validator {
 
     /**
      * @param line - обрабатываемая строка

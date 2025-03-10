@@ -12,12 +12,12 @@ public class EnterEyeColor implements SimpleEnterator<EyeColor> {
     /**
      * Ввод значения
      *
-     * @param scanner - сканер
+     * @param scanner   - сканер
      * @param validator - валидатор
      * @return true, если введено корректное значение, и false, в противном случае
      */
     @Override
-    public EyeColor enter(Scanner scanner, Validator<EyeColor> validator) {
+    public EyeColor enter(Scanner scanner, Validator validator) {
         String line;
         while (true) {
             System.out.print("Введите значение поля eyeColor (для справки введите list; " +
@@ -30,7 +30,7 @@ public class EnterEyeColor implements SimpleEnterator<EyeColor> {
             }
 
             if (validator.validate(line)) {
-                return line.isEmpty() ? null : EyeColor.valueOf(line);
+                return line.isEmpty() ? null:EyeColor.valueOf(line);
             }
         }
     }
