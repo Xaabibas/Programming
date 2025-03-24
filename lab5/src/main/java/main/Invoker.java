@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Класс-исполнитель
  */
-public class    Invoker {
+public class Invoker {
     /**
      * Набор пар значений "название команды" - "экземпляр команды"
      */
@@ -56,7 +56,7 @@ public class    Invoker {
             } catch (CommandException e) {
                 System.out.println(e.getMessage());
             } catch (NullPointerException e) {
-                System.out.println("Команда введена неверно! Для вывода списка команд используйте help"); // Ошибка ввода команды??? halp
+                System.out.println("Команда введена неверно! Для вывода списка команд используйте help");
             }
         }
     }
@@ -64,12 +64,12 @@ public class    Invoker {
     /**
      * Выполнение скрипта
      */
-    public void executeScript() {
-        while (scanner.hasNext()) {
+    public void executeScript(Scanner fileScanner) {
+        while (fileScanner.hasNext()) {
             try {
-                String[] tokens = scanner.nextLine().split(" ");
+                String[] tokens = fileScanner.nextLine().split(" ");
                 if (tokens[0].equals("execute_script")) {
-                    System.out.println();
+                    System.out.println("Нельзя исполнять другой файл!");
                     break;
                 }
                 Command command = commands.get(tokens[0]);
@@ -83,7 +83,7 @@ public class    Invoker {
             } catch (CommandException e) {
                 System.out.println(e.getMessage());
             } catch (NullPointerException e) {
-                System.out.println("Команда введена неверно! Для вывода списка команд используйте help"); // Ошибка ввода команды??? halp
+                System.out.println("Команда записана неверно! Для вывода списка команд используйте help");
             }
         }
     }

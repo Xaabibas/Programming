@@ -4,6 +4,9 @@ import commands.abstraction.Command;
 import main.CollectionManager;
 import moduls.Ticket;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Класс команды remove_lower_key - удаление всех элементов коллекции, меньших заданного по ключу
  */
@@ -47,10 +50,14 @@ public class RemoveLowerByKeyCommand extends Command {
                 System.out.println("В коллекции отсутствует элемент с заданным ключом");
                 return true;
             }
+            Set<Long> removeSet = new HashSet<>();
             for (Long key : this.getCm().getCollection().keySet()) {
                 if (ticket.compareTo(this.getCm().getCollection().get(key)) > 0) {
-                    this.getCm().getCollection().remove(key);
+                    removeSet.add(key);
                 }
+            }
+            for (Long key : removeSet) {
+                this.getCm().getCollection().remove(key);
             }
         } catch (NumberFormatException e) {
             System.out.println("Значение key должно быть Long!");

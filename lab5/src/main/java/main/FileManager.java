@@ -16,10 +16,22 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
+/**
+ * Класс для работы с файлами
+ */
 public class FileManager {
+    /**
+     * Файл коллекции
+     */
     private File file;
+    /**
+     * gson
+     */
     private final Gson gson;
 
+    /**
+     * Конструктор
+     */
     public FileManager() {
         this.gson = new GsonBuilder().setPrettyPrinting().serializeNulls()
                 .registerTypeAdapter(LinkedHashMap.class, new CollectionDeserializer())
@@ -30,6 +42,12 @@ public class FileManager {
                 .create();
     }
 
+    /**
+     * Обновляет значение поля file
+     *
+     * @param line - имя переменной
+     * @return возвращает true, если файл был обновлен, и false, если не обновлен
+     */
     public boolean registerFileByEnv(String line) {
         try {
             String path = System.getenv(line);
@@ -43,6 +61,12 @@ public class FileManager {
         return false;
     }
 
+    /**
+     * Возвращает файл по имени переменной
+     *
+     * @param line - имя переменной
+     * @return возвращает файл, если все хорошо, и null, в противном случае
+     */
     public File getFileByEnv(String line) {
         try {
             String path = System.getenv(line);
@@ -55,6 +79,11 @@ public class FileManager {
         return null;
     }
 
+    /**
+     * Читает коллекцию из записанного файла
+     *
+     * @return возвращает коллекцию из файла
+     */
     public LinkedHashMap<Long, Ticket> readCollection() {
 
         try {
@@ -74,11 +103,18 @@ public class FileManager {
             System.out.println("Файл не найден!");
         } catch (JsonSyntaxException e) {
             System.out.println("В файле ошибка синтаксиса json!");
+        } catch (Exception e) {
+            System.out.println("Невозможно десериализовать!");
         }
 
         return null;
     }
 
+    /**
+     * Записывает в файл коллекцию
+     *
+     * @param collection - записываемая коллекция
+     */
     public void writeCollection(LinkedHashMap<Long, Ticket> collection) {
         try {
             PrintWriter printWriter = new PrintWriter(file);
@@ -88,6 +124,19 @@ public class FileManager {
             printWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println("Файл записи коллекции не найден!");
+        }
+    }
+
+    /**
+     * Очистка файла
+     */
+    public void clearFile() {
+        try {
+            PrintWriter printWriter = new PrintWriter(file);
+            printWriter.println("{}");
+            printWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл не найден1");
         }
     }
 }

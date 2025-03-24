@@ -7,17 +7,21 @@ import main.Invoker;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
 
 /**
  * Класс команды execute_script - выполнение скрипта из введенного файла
  */
 public class ExecuteScriptCommand extends Command {
+    private final Invoker invoker;
     /**
      * @param cm - менеджер коллекции
      */
-    public ExecuteScriptCommand(CollectionManager cm) {
+    public ExecuteScriptCommand(CollectionManager cm, Invoker invoker) {
         super(cm);
+        this.invoker = invoker;
     }
 
     /**
@@ -44,17 +48,19 @@ public class ExecuteScriptCommand extends Command {
      */
     @Override
     public boolean execute(String... args) {
-        if (args.length!=2) {
+        if (args.length < 2) {
             return false;
         }
         try {
-            File file = new FileManager().getFileByEnv(args[1]);
-            if (file == null) {
-                return true;
-            }
+            String path = Arrays.toString(Arrays.copyOfRange(args, 1, args.length));
+
+            File file = new File(path.substring(1, path.length() - 1));
+
             Scanner scanner = new Scanner(file);
-            Invoker invoker = new Invoker(scanner);
-            invoker.executeScript();
+
+            invoker.executeScript(scanner);
+
+            scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("Такого файла не существует");
         }

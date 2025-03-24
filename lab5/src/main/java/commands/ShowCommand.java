@@ -42,6 +42,9 @@ public class ShowCommand extends Command {
         if (args.length != 1) {
             return false;
         }
+        if (this.getCm().getCollection().isEmpty()) {
+            System.out.println("Коллекция пуста");
+        }
         for (Long l : this.getCm().getCollection().keySet()) {
             System.out.println(l + " - " + this.getCm().getCollection().get(l).toString());
         }
