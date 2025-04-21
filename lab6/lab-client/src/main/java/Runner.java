@@ -1,18 +1,17 @@
-import Network.ClientNetworkManager;
-import network.Request;
+import network.NetworkManager;
 import enterator.EnterTicket;
 import moduls.Ticket;
+import network.Request;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Runner {
-    final private Scanner scanner;
-    final private ClientNetworkManager networkManager;
+    private final Scanner scanner;
+    private final NetworkManager networkManager;
 
-    public Runner(Scanner scanner, ClientNetworkManager networkManager) {
+    public Runner(Scanner scanner, NetworkManager networkManager) {
         this.scanner = scanner;
         this.networkManager = networkManager;
     }
@@ -29,38 +28,42 @@ public class Runner {
 
             String commandName = tokens[0].toLowerCase();
 
-            sendUserCommand(commandName, line);
+            try {
+                send(commandName, line);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    private void sendUserCommand(String commandName, String line) {
+    private void send(String commandName, String line) throws IOException {
         Request request;
 
-        if (commandName.equals("insert") || commandName.equals("update")
-                || commandName.equals("remove_greater") || commandName.equals("remove_lower")) {
+        if (commandName.equals("insert") || commandName.equals("update") ||
+                commandName.equals("remove_greater") || commandName.equals("remove_lower")) {
             Ticket ticket = new EnterTicket().enter(scanner);
+            BufferedReader f = new BufferedReader(new FileReader("scratch.txt"));
+            ticket.setName(f.readLine());
 
             request = new Request(commandName, line, ticket);
 
+
             networkManager.sendAndReceive(request);
-        }
-        else if (commandName.equals("exit")) {
+        } else if (commandName.equals("exit")) {
             request = new Request(commandName, line);
             networkManager.sendAndReceive(request);
             System.out.println("Работа клиентского приложения завершена");
             System.exit(0);
-        }
-        else if (commandName.equals("execute_script")) {
+        } else if (commandName.equals("execute_script")) {
             executeScript(line);
-        }
-        else {
+        } else {
             request = new Request(commandName, line);
 
             networkManager.sendAndReceive(request);
         }
     }
 
-    private void executeScript(String line) {
+    private void executeScript(String line) throws IOException {
         String[] tokens = line.split(" ");
 
         if (tokens.length < 2) {
@@ -84,7 +87,7 @@ public class Runner {
                     continue;
                 }
 
-                sendUserCommand(commandName, fileLine);
+                send(commandName, fileLine);
             }
 
             fileScanner.close();

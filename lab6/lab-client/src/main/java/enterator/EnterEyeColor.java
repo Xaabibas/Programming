@@ -3,6 +3,7 @@ package enterator;
 import moduls.EyeColor;
 import validator.Validator;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class EnterEyeColor implements SimpleEnterator<EyeColor> {
@@ -15,7 +16,7 @@ public class EnterEyeColor implements SimpleEnterator<EyeColor> {
             line = scanner.nextLine();
 
             while (line.equals("list")) {
-                EyeColor.show();
+                Arrays.stream(EyeColor.values()).forEach(color -> System.out.println( "- " + color));
                 System.out.print("> ");
                 line = scanner.nextLine();
             }

@@ -3,6 +3,7 @@ package enterator;
 import moduls.Country;
 import validator.Validator;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class EnterCountry implements SimpleEnterator<Country> {
@@ -14,7 +15,7 @@ public class EnterCountry implements SimpleEnterator<Country> {
                     "для присвоения значения null введите пустую строку) > ");
             line = scanner.nextLine();
             while (line.equals("list")) {
-                Country.show();
+                Arrays.stream(Country.values()).forEach(country -> System.out.println("- " + country));
                 System.out.print("> ");
                 line = scanner.nextLine();
             }

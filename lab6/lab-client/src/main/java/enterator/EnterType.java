@@ -3,6 +3,7 @@ package enterator;
 import moduls.TicketType;
 import validator.Validator;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class EnterType implements SimpleEnterator<TicketType> {
@@ -15,7 +16,7 @@ public class EnterType implements SimpleEnterator<TicketType> {
             line = scanner.nextLine();
 
             while (line.equals("list")) {
-                TicketType.show();
+                Arrays.stream(TicketType.values()).forEach(type -> System.out.println("- " + type));
                 System.out.print("> ");
                 line = scanner.nextLine();
             }

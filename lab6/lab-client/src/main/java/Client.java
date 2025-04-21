@@ -1,20 +1,25 @@
-import Network.ClientNetworkManager;
+import network.NetworkManager;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public final class Client {
-    private Client() {
-        throw new UnsupportedOperationException("This is an utility class and can not be instantiated");
+    private final int port;
+
+    public Client(int port) {
+        this.port = port;
     }
 
-    public static void main(String[] args) throws UnknownHostException {
+    public void run() {
         Scanner scanner = new Scanner(System.in);
-        ClientNetworkManager networkManager = new ClientNetworkManager(46789, InetAddress.getByName("helios.cs.ifmo.ru"));
-//        ClientNetworkManager networkManager = new ClientNetworkManager(46789, InetAddress.getByName("localhost"));
-        Runner runner = new Runner(scanner, networkManager);
+        try {
+            NetworkManager networkManager = new NetworkManager(port, InetAddress.getByName("localhost"));
+            Runner runner = new Runner(scanner, networkManager);
 
-        runner.interactiveMode();
+            runner.interactiveMode();
+        } catch (UnknownHostException e) {
+            System.out.println("[ERROR] Неизвестный хост");
+        }
     }
 }

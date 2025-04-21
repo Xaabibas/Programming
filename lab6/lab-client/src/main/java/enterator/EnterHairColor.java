@@ -3,6 +3,7 @@ package enterator;
 import moduls.HairColor;
 import validator.Validator;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class EnterHairColor implements SimpleEnterator<HairColor> {
@@ -15,7 +16,7 @@ public class EnterHairColor implements SimpleEnterator<HairColor> {
             line = scanner.nextLine();
 
             while (line.equals("list")) {
-                HairColor.show();
+                Arrays.stream(HairColor.values()).forEach(color -> System.out.println("- " + color));
                 System.out.print("> ");
                 line = scanner.nextLine();
             }
