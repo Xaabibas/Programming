@@ -8,15 +8,5 @@ public enum EyeColor {
     YELLOW,
     ORANGE,
     WHITE,
-    BROWN;
-
-    /**
-     * Выводит пронумерованный список всех цветов глаз
-     */
-    public static void show() {
-        int cnt = 1;
-        for (EyeColor color : EyeColor.values()) {
-            System.out.println(cnt++ + ") " + color);
-        }
-    }
+    BROWN
 }
