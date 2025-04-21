@@ -42,8 +42,6 @@ public class Runner {
         if (commandName.equals("insert") || commandName.equals("update") ||
                 commandName.equals("remove_greater") || commandName.equals("remove_lower")) {
             Ticket ticket = new EnterTicket().enter(scanner);
-            BufferedReader f = new BufferedReader(new FileReader("scratch.txt"));
-            ticket.setName(f.readLine());
 
             request = new Request(commandName, line, ticket);
 
