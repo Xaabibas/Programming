@@ -11,6 +11,8 @@ import network.Response;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 public class RemoveLowerCommand extends Command {
     public RemoveLowerCommand(CollectionManager cm) {
         super(cm);
@@ -29,12 +31,10 @@ public class RemoveLowerCommand extends Command {
             return Response.wrongCount();
         }
         Ticket ticket = (Ticket) request.getObj();
-        Set<Long> removeSet = new HashSet<>();
-        for (Long key : this.getCm().getCollection().keySet()) {
-            if (ticket.compareTo(this.getCm().getCollection().get(key)) > 0) {
-                removeSet.add(key);
-            }
-        }
+        Set<Long> removeSet = this.getCm().getCollection().keySet().stream().filter(
+                l -> this.getCm().getCollection().get(l).compareTo(ticket) < 0
+        ).collect(Collectors.toSet());
+
         for (Long key : removeSet) {
             this.getCm().getCollection().remove(key);
         }

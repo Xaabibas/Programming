@@ -43,6 +43,10 @@ public class CoordinatesTypeAdapter implements JsonSerializer<Coordinates>, Json
 
         Coordinates coordinates = new Coordinates();
 
+        if (jsonObject.isJsonNull() || jsonObject.get("x").getAsFloat() <= -626.0) {
+            throw new IllegalArgumentException();
+        }
+
         coordinates.setX(jsonObject.get("x").getAsFloat());
         coordinates.setY(jsonObject.get("y").getAsLong());
 

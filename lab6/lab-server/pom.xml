@@ -30,7 +30,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>Server</mainClass>
+							<mainClass>Main</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

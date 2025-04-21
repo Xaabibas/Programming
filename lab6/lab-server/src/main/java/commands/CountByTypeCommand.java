@@ -23,19 +23,11 @@ public class CountByTypeCommand extends Command {
         if (request.getTokens().length != 2) {
             return Response.wrongCount();
         }
-        String str = request.getTokens()[1];
         try {
-            TicketType type = TicketType.valueOf(str);
-            int cnt = 0;
-            for (Ticket ticket : this.getCm().getCollection().values()) {
-                try {
-                    if (ticket.getType().equals(type)) {
-                        cnt++;
-                    }
-                } catch (NullPointerException ignored) {
-
-                }
-            }
+            TicketType type = TicketType.valueOf(request.getTokens()[1].toUpperCase());
+            long cnt = this.getCm().getCollection().values().stream().filter(
+                    ticket -> ticket.getType() == type
+            ).count();
             return new Response("Количество билетов типа " + type + ": " + cnt);
         } catch (IllegalArgumentException e) {
             return new Response("Введен неверный тип Ticket");

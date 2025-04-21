@@ -11,28 +11,31 @@ import java.util.logging.Logger;
 
 public class ResponseManager {
     public static final Logger logger = Logger.getLogger("ResponseLogger");
+
     public void sendToClient(Response response, Socket client) {
         logger.info("Попытка отправить ответ пользователю");
         try {
-            ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-            ObjectOutputStream out = new ObjectOutputStream(bytesOut);
-
-            out.writeObject(response); // Десериализация
-            byte[] data = bytesOut.toByteArray(); // Запись десериализованных данных
-
-
+            byte[] data = serialize(response);
 
             DataOutputStream dataOut = new DataOutputStream(client.getOutputStream());
 
-            dataOut.writeInt(data.length); // Передаем длину сообщения
-            dataOut.write(data); // Передаем десериализованный объект
+            dataOut.writeInt(data.length); // Записываем длину сообщения
+            dataOut.write(data); // Записываем сериализованный объект
 
-            bytesOut.close();
-            out.close();
             dataOut.close();
             logger.info("Ответ был успешно отправлен");
         } catch (IOException e) {
             logger.warning("Не удалось отправить ответ пользователю");
         }
+    }
+
+    private byte[] serialize(Object o) throws IOException {
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(bytesOut);
+
+        out.writeObject(o); // Сериализация
+        bytesOut.close();
+        out.close();
+        return bytesOut.toByteArray();
     }
 }

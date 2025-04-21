@@ -48,6 +48,9 @@ public class TicketTypeAdapter implements JsonSerializer<Ticket>, JsonDeserializ
 
         Ticket ticket = new Ticket();
 
+        if (jsonObject.get("name").isJsonNull() || jsonObject.get("price").isJsonNull() || jsonObject.get("price").getAsFloat() <= 0.0) {
+            throw new IllegalArgumentException();
+        }
         ticket.setName(jsonObject.get("name").getAsString());
         ticket.setPrice(jsonObject.get("price").getAsFloat());
         ticket.setType(jsonObject.get("type").isJsonNull() ? null:TicketType.valueOf(jsonObject.get("type").getAsString()));

@@ -2,13 +2,8 @@ package commands;
 
 import commands.abstraction.Command;
 import managers.CollectionManager;
-import moduls.Ticket;
 import network.Request;
 import network.Response;
-
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 
 public class PrintAscendingCommand extends Command {
     public PrintAscendingCommand(CollectionManager cm) {
@@ -27,11 +22,11 @@ public class PrintAscendingCommand extends Command {
         if (request.getTokens().length!=1) {
             return Response.wrongCount();
         }
-        this.getCm().sort();
+        this.getCm().sortByPrice();
 
         StringBuilder answer = new StringBuilder();
         for (Long key : this.getCm().getCollection().keySet()) {
-            answer.append(key).append(this.getCm().getCollection().get(key).toString()).append("\n");
+            answer.append(key).append(" - ").append(this.getCm().getCollection().get(key).toString()).append("\n");
         }
         return new Response(answer.toString());
     }

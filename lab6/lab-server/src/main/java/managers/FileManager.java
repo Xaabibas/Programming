@@ -28,8 +28,7 @@ public class FileManager {
                 .registerTypeAdapter(Ticket.class, new TicketTypeAdapter())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
                 .registerTypeAdapter(Person.class, new PersonTypeAdapter())
-                .registerTypeAdapter(Coordinates.class, new CoordinatesTypeAdapter())
-                .create();
+                .registerTypeAdapter(Coordinates.class, new CoordinatesTypeAdapter()).create();
     }
 
     public void registerFileByEnv(String line) {
@@ -73,10 +72,11 @@ public class FileManager {
             logger.severe("Файл не найден");
         } catch (JsonSyntaxException e) {
             logger.severe("В файле ошибка синтаксиса json");
+        } catch (IllegalArgumentException e) {
+            logger.severe("В файле записаны недопустимые данные");
         } catch (Exception e) {
             logger.severe("Не удалось десериализовать данные");
-        }
-        return null;
+        } return null;
     }
 
     public void writeCollection(LinkedHashMap<Long, Ticket> collection) {

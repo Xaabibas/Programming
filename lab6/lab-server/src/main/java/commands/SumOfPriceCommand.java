@@ -22,10 +22,7 @@ public class SumOfPriceCommand extends Command {
         if (request.getTokens().length!=1) {
             return Response.wrongCount();
         }
-        float sum = 0;
-        for (Ticket ticket : this.getCm().getCollection().values()) {
-            sum = sum + ticket.getPrice();
-        }
+        float sum = this.getCm().getCollection().values().stream().reduce(0.0f, (s, t) -> s + t.getPrice(), Float::sum);
         return new Response("Сумма цен билетов: " + sum);
     }
 }

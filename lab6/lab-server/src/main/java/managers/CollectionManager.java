@@ -36,14 +36,16 @@ public class CollectionManager {
         return time;
     }
 
-    public void sort() {
-        this.collection = collection.entrySet().stream().sorted().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+    public void sortByPrice() {
+        this.collection = collection.entrySet().stream().sorted(Map.Entry.comparingByValue(
+                (o1, o2) -> o1.compareTo(o2)
+        )).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
     public void sortByName() {
-        this.collection = collection.entrySet().stream().sorted(Map.Entry.comparingByValue((o1, o2) -> {
-            return o1.getName().compareTo(o2.getName());
-        })).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+        this.collection = collection.entrySet().stream().sorted(Map.Entry.comparingByValue(
+                (o1, o2) -> o1.getName().compareTo(o2.getName())
+        )).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
     public FileManager getFm() {
