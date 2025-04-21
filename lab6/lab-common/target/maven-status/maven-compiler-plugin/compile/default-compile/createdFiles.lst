@@ -1,9 +1,0 @@
-moduls\EyeColor.class
-moduls\TicketType.class
-moduls\Coordinates.class
-moduls\Country.class
-network\Request.class
-moduls\Ticket.class
-moduls\Person.class
-network\Response.class
-moduls\HairColor.class
