@@ -27,7 +27,7 @@ public class DataBaseManager {
         Connection connection;
         try {
             logger.info("Try to connect to DB");
-            String url = "jdbc:postgresql://localhost:5432/studs";
+            String url = "jdbc:postgresql://pg:5432/studs";
             Properties info = new Properties();
             info.load(new FileReader("db.cfg"));
 
@@ -44,7 +44,7 @@ public class DataBaseManager {
         return null;
     }
 
-    public ConcurrentHashMap<Long, Ticket> readCollection() throws SQLException{
+    public ConcurrentHashMap<Long, Ticket> readCollection() throws SQLException {
         try (Connection connection = connect()) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM tickets");
             ResultSet result = statement.executeQuery();
@@ -60,8 +60,8 @@ public class DataBaseManager {
                 ticket.setCoordinates(new Coordinates(result.getFloat("x"), result.getLong("y")));
                 ticket.setCreationDate(LocalDateTime.parse(result.getTimestamp("creation").toString(), formatter));
                 ticket.setPrice(result.getFloat("price"));
-                ticket.setType(result.getString("type")==null ? null:TicketType.valueOf(result.getString("type")));
-                ticket.setPerson(new Person(result.getTimestamp("birthday")==null ? null:LocalDateTime.parse(result.getTimestamp("birthday").toString(), formatter), result.getString("eye")==null ? null:EyeColor.valueOf(result.getString("eye")), result.getString("hair")==null ? null:HairColor.valueOf(result.getString("hair")), result.getString("country")==null ? null:Country.valueOf(result.getString("country"))));
+                ticket.setType(result.getString("type") == null ? null : TicketType.valueOf(result.getString("type")));
+                ticket.setPerson(new Person(result.getTimestamp("birthday") == null ? null : LocalDateTime.parse(result.getTimestamp("birthday").toString(), formatter), result.getString("eye") == null ? null : EyeColor.valueOf(result.getString("eye")), result.getString("hair") == null ? null : HairColor.valueOf(result.getString("hair")), result.getString("country") == null ? null : Country.valueOf(result.getString("country"))));
                 Long key = result.getLong("key");
                 collection.put(key, ticket);
             }
@@ -69,8 +69,8 @@ public class DataBaseManager {
         }
     }
 
-    public List<Long> clear(String user) throws SQLException{
-        try (Connection connection = connect()){
+    public List<Long> clear(String user) throws SQLException {
+        try (Connection connection = connect()) {
             PreparedStatement selectStatement = connection.prepareStatement("SELECT key FROM tickets " + "WHERE client = ?");
             selectStatement.setString(1, user);
             ResultSet set = selectStatement.executeQuery();
@@ -91,45 +91,58 @@ public class DataBaseManager {
     public void insert(Long key, Ticket ticket, String user) throws SQLException {
 
         try (Connection connection = connect()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO tickets " + "(key, name, x, y, price, type, birthday, eye, hair, country, creation, client) VALUES " + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO tickets " +
+                    "(key, name, x, y, price, type, birthday, eye, hair, country, creation, client) VALUES " +
+                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             statement.setLong(1, key);
             statement.setString(2, ticket.getName());
             statement.setFloat(3, ticket.getCoordinates().getX());
             statement.setLong(4, ticket.getCoordinates().getY());
             statement.setFloat(5, ticket.getPrice());
-            String type = ticket.getType()==null ? null:ticket.getType().toString();
+            String type = ticket.getType() == null ? null : ticket.getType().toString();
             statement.setString(6, type);
-            Timestamp birthday = ticket.getPerson().getBirthday()==null ? null:Timestamp.valueOf(ticket.getPerson().getBirthday());
+            Timestamp birthday = ticket.getPerson().getBirthday() == null ? null : Timestamp.valueOf(ticket.getPerson().getBirthday());
             statement.setTimestamp(7, birthday);
-            String eye = ticket.getPerson().getEyeColor()==null ? null:ticket.getPerson().getEyeColor().toString();
+            String eye = ticket.getPerson().getEyeColor() == null ? null : ticket.getPerson().getEyeColor().toString();
             statement.setString(8, eye);
-            String hair = ticket.getPerson().getHairColor()==null ? null:ticket.getPerson().getHairColor().toString();
+            String hair = ticket.getPerson().getHairColor() == null ? null : ticket.getPerson().getHairColor().toString();
             statement.setString(9, hair);
-            String country = ticket.getPerson().getNationality()==null ? null:ticket.getPerson().getNationality().toString();
+            String country = ticket.getPerson().getNationality() == null ? null : ticket.getPerson().getNationality().toString();
             statement.setString(10, country);
             statement.setTimestamp(11, Timestamp.valueOf(ticket.getCreationDate()));
             statement.setString(12, user);
             statement.execute();
+
+            PreparedStatement statement1 = connection.prepareStatement(
+                    "SELECT id FROM tickets " +
+                            "WHERE key = ?");
+            statement1.setLong(1, key);
+            ResultSet set = statement1.executeQuery();
+
+            if (set.next()) {
+                long id = set.getLong("id");
+                ticket.setId(id);
+            }
         }
     }
 
     public boolean update(Long key, String user, Ticket ticket) throws SQLException {
         try (Connection connection = connect()) {
             PreparedStatement statement = connection.prepareStatement(
-                "UPDATE tickets " +
-                        "SET name = ?, " +
-                        "x = ?, " +
-                        "y = ?, " +
-                        "price = ?, " +
-                        "type = ?, " +
-                        "birthday = ?, " +
-                        "eye = ?, " +
-                        "hair = ?, " +
-                        "country = ?, " +
-                        "creation = ? " +
+                    "UPDATE tickets " +
+                            "SET name = ?, " +
+                            "x = ?, " +
+                            "y = ?, " +
+                            "price = ?, " +
+                            "type = ?, " +
+                            "birthday = ?, " +
+                            "eye = ?, " +
+                            "hair = ?, " +
+                            "country = ?, " +
+                            "creation = ? " +
                             "WHERE key = ? AND " +
-                                "client = ?"
+                            "client = ?"
             );
 
             statement.setLong(11, key);
@@ -149,14 +162,28 @@ public class DataBaseManager {
             statement.setString(9, country);
             statement.setTimestamp(10, Timestamp.valueOf(ticket.getCreationDate()));
             statement.setString(12, user);
-            return statement.executeUpdate() > 0;
+
+            if (statement.executeUpdate() > 0) {
+                PreparedStatement statement1 = connection.prepareStatement(
+                        "SELECT id FROM tickets " +
+                                "WHERE key = ?");
+                statement1.setLong(1, key);
+                ResultSet set = statement1.executeQuery();
+
+                if (set.next()) {
+                    long id = set.getLong("id");
+                    ticket.setId(id);
+                }
+                return true;
+            }
+            return false;
         }
     }
 
-    public boolean removeByKey(Long key, String user) throws SQLException{
+    public boolean removeByKey(Long key, String user) throws SQLException {
         try (Connection connection = connect()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "DELETE FROM tickets *" +
+                    "DELETE FROM tickets * " +
                             "WHERE key = ? AND " +
                             "client = ?"
             );
@@ -167,12 +194,25 @@ public class DataBaseManager {
         }
     }
 
-    public List<Long> removeByKeySet(Set<Long> removeSet, String user) throws SQLException{
+    public boolean removeByKey(Long key, String user, Connection connection) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(
+                "DELETE FROM tickets * " +
+                        "WHERE key = ? AND " +
+                        "client = ?"
+        );
+
+        statement.setLong(1, key);
+        statement.setString(2, user);
+        return statement.executeUpdate() > 0;
+    }
+
+
+    public List<Long> removeByKeySet(Set<Long> removeSet, String user) throws SQLException {
         try (Connection connection = connect()) {
             connection.setAutoCommit(false);
             List<Long> removeList = new ArrayList<>();
             for (Long key : removeSet) {
-                if (removeByKey(key, user)) {
+                if (removeByKey(key, user, connection)) {
                     removeList.add(key);
                 }
             }
@@ -182,9 +222,11 @@ public class DataBaseManager {
         }
     }
 
-    public void register(String user, String password) throws SQLException{
+    public void register(String user, String password) throws SQLException {
         try (Connection connection = connect()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (name, password) VALUES " + "(?, ?)");
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO users (name, password) VALUES " +
+                            "(?, ?)");
 
             statement.setString(1, user);
             statement.setBytes(2, MessageDigest.getInstance("SHA-1").digest((password + salt).getBytes(StandardCharsets.UTF_8)));
@@ -197,10 +239,12 @@ public class DataBaseManager {
 
     public boolean checkUserPassword(String user, String password) throws SQLException {
         try (Connection connection = connect()) {
-            if (user==null) {
+            if (user == null) {
                 return false;
             }
-            PreparedStatement statement = connection.prepareStatement("SELECT password FROM users " + "WHERE name = ?");
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT password FROM users " +
+                            "WHERE name = ?");
             statement.setString(1, user);
 
             ResultSet set = statement.executeQuery();

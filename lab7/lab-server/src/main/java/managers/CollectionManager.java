@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class CollectionManager {
     public static final Logger logger = Logger.getLogger("CollectionLogger");
     private ConcurrentHashMap<Long, Ticket> collection;
-
     private final LocalDateTime time;
     private final DataBaseManager dbManager;
 
@@ -30,10 +29,6 @@ public class CollectionManager {
 
     public void loadCollection() throws SQLException{
         collection = dbManager.readCollection();
-    }
-
-    public void setCollection(ConcurrentHashMap<Long, Ticket> collection) {
-        this.collection = collection;
     }
 
     public LocalDateTime getTime() {

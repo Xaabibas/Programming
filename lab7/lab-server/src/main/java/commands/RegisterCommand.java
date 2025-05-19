@@ -2,7 +2,6 @@ package commands;
 
 import commands.abstraction.Command;
 import managers.CollectionManager;
-import managers.DataBaseManager;
 import network.Request;
 import network.Response;
 

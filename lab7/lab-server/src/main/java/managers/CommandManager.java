@@ -6,13 +6,11 @@ import network.Response;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 public class CommandManager {
     public static final Logger logger = Logger.getLogger("CommandLogger");
     private final Map<String, Command> commands;
-    private final Object lock = new Object();
 
     public CommandManager() {
         this.commands = new HashMap<>();

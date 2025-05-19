@@ -18,7 +18,6 @@ public final class Server extends Thread {
     private final CommandManager commandManager;
     private final ExecutorService pool = Executors.newCachedThreadPool();
     private final ConcurrentLinkedQueue<Request> requestQueue = new ConcurrentLinkedQueue<>();
-    private final ConcurrentLinkedQueue<Response> responseQueue = new ConcurrentLinkedQueue<>();
     private final ConcurrentLinkedQueue<Socket> clientQueue = new ConcurrentLinkedQueue<>();
 
     public Server(RequestManager requestManager, ResponseManager responseManager,
@@ -35,6 +34,7 @@ public final class Server extends Thread {
             while (true) {
                 if (!requestQueue.isEmpty()) {
                     Request request = requestQueue.poll();
+                    Socket client = clientQueue.poll();
                     AtomicReference<Response> response = new AtomicReference<>(new Response());
 
                     Thread processThread = new Thread(() -> {
@@ -46,7 +46,7 @@ public final class Server extends Thread {
                     Thread sendThread = new Thread(() -> {
                         try {
                             processThread.join();
-                            responseManager.sendToClient(response.get(), clientQueue.poll());
+                            responseManager.sendToClient(response.get(), client);
                             logger.info("Response was sent");
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
@@ -67,43 +67,4 @@ public final class Server extends Thread {
             });
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-//        while (true) {
-//            try {
-//                Socket client = networkManager.connectToClient();
-//
-//                pool.submit(() -> {
-//                    Request request = requestManager.readRequest(client);
-//                    logger.info("The request from the user was successfully received");
-//
-//                    AtomicReference<Response> response = new AtomicReference<>(new Response());
-//                    Thread t = new Thread(() -> {
-//                        response.set(commandManager.processRequest(request)); // Обрабатываем запрос, формируем ответ
-//                        logger.info("The request was successfully processed and a response was generated");
-//                    });
-//
-//                    new Thread(() -> {
-//                        try {
-//                            t.join();
-//                            responseManager.sendToClient(response.get(), client);
-//                        } catch (InterruptedException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }).start();
-//                });
-//            } catch (NullPointerException e) {
-//                logger.warning("Couldn't process the request");
-//            }
-//        }
-//    }
 }

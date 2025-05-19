@@ -8,7 +8,6 @@ import network.Request;
 import network.Response;
 
 import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,7 +47,6 @@ public class RemoveLowerByKeyCommand extends Command {
         } catch (NumberFormatException e) {
             return new Response("[ERROR] Key не является числом");
         } catch (SQLException e) {
-            e.printStackTrace();
             return new Response("[ERROR] Не удалось удалить меньшие элементы");
         }
     }
