@@ -8,27 +8,15 @@ import java.util.Objects;
 
 public class Ticket implements Comparable<Ticket>, Serializable {
     final private static long serialVersionUID = 15L;
-    
     private long id;
-    
     private String name;
-    
     private Coordinates coordinates;
-    
     private LocalDateTime creationDate;
-    
     private float price;
-    
     private TicketType type;
-    
     private Person person;
-
-    
-    private static long cnt = 1;
-
     
     public Ticket() {
-        this.id = cnt++;
         this.creationDate = LocalDateTime.now();
     }
 
@@ -90,12 +78,6 @@ public class Ticket implements Comparable<Ticket>, Serializable {
     
     public void setPerson(Person person) {
         this.person = person;
-    }
-
-
-    
-    public void setId() {
-        this.id = cnt++;
     }
 
     public void setId(long id) {
